@@ -100,4 +100,8 @@ template is departmental content even though it contains no patient data.
 Not affiliated with or endorsed by Nuance / Microsoft. PowerScribe is their trademark. Check any
 edited template in PowerScribe before putting it into clinical use.
 
+Provided as-is with no warranty; not cleared for clinical use by any regulatory authority.
+
+The user is solely responsible for compliance with institutional policies, HIPAA, and applicable laws.
+
 MIT licensed.
