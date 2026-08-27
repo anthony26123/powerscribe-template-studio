@@ -3,6 +3,8 @@
 A single-page browser app for viewing and editing **PowerScribe AutoText `.rtf` report
 templates** — with a proper pick-list editor.
 
+https://anthony26123.github.io/powerscribe-template-studio/
+
 Everything runs in the browser. Templates are read with the File API and written back with a
 local download; **no file is ever uploaded anywhere**, and the page makes no network requests
 at all.
@@ -69,14 +71,6 @@ A synthetic template to try it on ships in [`test/samples/demo-template.rtf`](te
 
 `Ctrl`/`⌘`+`S` saves, `Ctrl`+`O` opens.
 
-## Guarantees
-
-On the three sample templates this was built against, an untouched template saves back with:
-
-- the AutoText XML **byte-for-byte identical**,
-- the report's plain text identical, and
-- every field offset re-verified against the regenerated body.
-
 ## Hosting
 
 `index.html` is fully self-contained — no build step, no dependencies, no CDN. To publish with
@@ -99,6 +93,7 @@ node test/roundtrip.js # runs against every .rtf in test/samples/
 templates in there to test against them — they will not be committed. Do not commit real
 department templates, and keep them out of screenshots and issue reports too: the body text of a
 template is departmental content even though it contains no patient data.
+
 
 ## Disclaimer
 
