@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PowerScribe Template Studio</title>
+<style>
+:root{
+  --bg:#f6f7f9; --panel:#fff; --panel2:#fafbfc; --bd:#dfe3e8; --bd2:#eceef1;
+  --tx:#1c2024; --mut:#697077; --acc:#2563eb; --acc-w:#eff4ff;
+  --fld:#b22222; --fld-bg:#fdf1f1; --fld-bd:#f0cfcf;
+  --ok:#15803d; --warn:#b45309; --warn-bg:#fffaf0; --err:#b91c1c; --err-bg:#fef4f4;
+  --shadow:0 1px 2px rgba(16,24,40,.06),0 1px 3px rgba(16,24,40,.1);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#15181c; --panel:#1c2025; --panel2:#191d21; --bd:#2c323a; --bd2:#242930;
+    --tx:#e6e8ea; --mut:#9aa2ad; --acc:#6ea0ff; --acc-w:#1b2740;
+    --fld:#ff7b72; --fld-bg:#2a1c1c; --fld-bd:#4a2c2c;
+    --ok:#4ade80; --warn:#fbbf24; --warn-bg:#2a2211; --err:#f87171; --err-bg:#2c1818;
+    --shadow:none;
+  }
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--tx);
+  font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  display:flex;flex-direction:column;overflow:hidden}
+button{font:inherit;color:inherit;background:var(--panel);border:1px solid var(--bd);
+  border-radius:6px;padding:5px 10px;cursor:pointer}
+button:hover{background:var(--acc-w);border-color:var(--acc)}
+button.primary{background:var(--acc);border-color:var(--acc);color:#fff}
+button.primary:hover{filter:brightness(1.08)}
+button.ghost{background:transparent;border-color:transparent}
+button.ghost:hover{background:var(--bd2);border-color:transparent}
+button:disabled{opacity:.45;cursor:default}
+button.icon{padding:3px 7px;line-height:1}
+input,select,textarea{font:inherit;color:inherit;background:var(--panel);
+  border:1px solid var(--bd);border-radius:6px;padding:5px 8px;width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--acc);outline-offset:-1px;border-color:var(--acc)}
+textarea{resize:vertical}
+.row{display:flex;align-items:center;gap:8px}
+.sp{flex:1}
+.mut{color:var(--mut)}
+.small{font-size:12px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+/* header */
+header{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--panel);
+  border-bottom:1px solid var(--bd);flex:0 0 auto}
+.brand{font-weight:650;letter-spacing:-.2px;white-space:nowrap}
+.brand span{color:var(--mut);font-weight:400;font-size:12px;margin-left:6px}
+.tabs{display:flex;gap:4px;overflow-x:auto;flex:1;min-width:0;padding:2px}
+.tab{display:flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid var(--bd);
+  border-radius:6px;background:var(--panel2);white-space:nowrap;cursor:pointer;font-size:13px}
+.tab.on{background:var(--acc-w);border-color:var(--acc);color:var(--acc)}
+.tab .x{opacity:.5;font-size:15px;line-height:1}
+.tab .x:hover{opacity:1}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--warn);display:inline-block}
+.seg{display:flex;border:1px solid var(--bd);border-radius:6px;overflow:hidden}
+.seg button{border:0;border-radius:0;padding:5px 11px;background:var(--panel)}
+.seg button+button{border-left:1px solid var(--bd)}
+.seg button.on{background:var(--acc);color:#fff}
+
+/* layout */
+main{flex:1;display:flex;min-height:0}
+aside{width:262px;flex:0 0 262px;background:var(--panel);border-right:1px solid var(--bd);
+  display:flex;flex-direction:column;min-height:0}
+#center{flex:1;min-width:0;display:flex;flex-direction:column;min-height:0}
+#insp{width:390px;flex:0 0 390px;background:var(--panel);border-left:1px solid var(--bd);
+  overflow:auto;min-height:0}
+.phead{display:flex;align-items:center;gap:6px;padding:9px 12px;border-bottom:1px solid var(--bd2);
+  font-size:11px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.pbody{overflow:auto;flex:1;min-height:0}
+.pad{padding:12px}
+
+/* outline */
+.olist{padding:4px}
+.oitem{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer}
+.oitem:hover{background:var(--bd2)}
+.oitem.on{background:var(--acc-w);box-shadow:inset 2px 0 0 var(--acc)}
+.oitem .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.badge{font-size:10px;font-weight:600;padding:1px 5px;border-radius:20px;border:1px solid var(--bd);
+  color:var(--mut);white-space:nowrap}
+.badge.t3{color:var(--acc);border-color:var(--acc)}
+.badge.imp{color:var(--warn);border-color:var(--warn)}
+.osec{padding:10px 12px 4px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}
+
+/* document */
+#docwrap{flex:1;overflow:auto;padding:26px 24px 120px;min-height:0}
+#toolbar{flex:0 0 auto;background:var(--panel2);border-bottom:1px solid var(--bd2);padding:7px 24px}
+#toolbar:empty{display:none}
+.sheet{max-width:820px;margin:0 auto;background:var(--panel);border:1px solid var(--bd);
+  border-radius:10px;box-shadow:var(--shadow);padding:34px 40px}
+#body{font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.65;outline:none;white-space:pre-wrap}
+.para{min-height:1.65em}
+.para:focus{outline:none}
+.run{white-space:pre-wrap}
+.chip{display:inline;border-radius:4px;padding:0 2px;background:var(--fld-bg);
+  box-shadow:inset 0 0 0 1px var(--fld-bd);cursor:pointer;white-space:normal}
+.chip:hover{box-shadow:inset 0 0 0 1px var(--fld)}
+.chip.on{background:var(--acc-w);box-shadow:inset 0 0 0 2px var(--acc)}
+.chip .n{color:var(--fld);font-weight:700}
+.chip .sep,.chip .alt{color:var(--mut)}
+.chip .def{color:var(--fld);text-decoration:underline;text-underline-offset:2px}
+.chip .cnt{font-size:10px;color:var(--mut);border:1px solid var(--bd);border-radius:20px;
+  padding:0 4px;margin-left:3px;vertical-align:1px;font-family:-apple-system,sans-serif;font-weight:600}
+.chip .free{color:var(--mut);font-style:italic}
+
+/* preview */
+.pv{max-width:820px;margin:0 auto}
+.pv .sheet{font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.75;white-space:pre-wrap}
+.pv select,.pv input.fi{display:inline;width:auto;max-width:340px;padding:1px 4px;font-size:13px;
+  border-radius:4px;border:1px solid var(--fld-bd);background:var(--fld-bg);color:var(--fld);font-weight:600}
+.pv .sys{background:var(--bd2);border-radius:4px;padding:0 5px;color:var(--mut);font-size:13px}
+pre.out{background:var(--panel2);border:1px solid var(--bd);border-radius:8px;padding:14px;
+  white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;margin:0}
+
+/* inspector */
+.f{padding:10px 14px;border-bottom:1px solid var(--bd2)}
+.lbl{font-size:11px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);
+  margin-bottom:5px;display:block}
+.chk{display:flex;align-items:flex-start;gap:8px;padding:4px 0;cursor:pointer}
+.chk input{width:auto;margin:3px 0 0}
+.chk .t{flex:1}
+.chk .d{display:block;font-size:11.5px;color:var(--mut);line-height:1.4}
+.ch{border:1px solid var(--bd);border-radius:8px;margin-bottom:8px;background:var(--panel2);overflow:hidden}
+.ch.def{border-color:var(--fld);background:var(--fld-bg)}
+.ch .top{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--bd2)}
+.ch .hnd{cursor:grab;color:var(--mut);padding:0 2px;user-select:none}
+.ch input.lab{flex:1;font-weight:600;font-size:13px;padding:3px 6px}
+.ch textarea{border:0;border-radius:0;background:transparent;padding:7px 9px;font-size:13px;min-height:44px}
+.ch textarea:focus{outline:1px solid var(--acc);outline-offset:-1px}
+.ch.drag{opacity:.4}
+.ch.over{border-color:var(--acc);border-style:dashed}
+.pill{font-size:10px;font-weight:700;color:var(--fld);border:1px solid var(--fld);border-radius:20px;padding:0 5px}
+.empty{padding:40px 20px;text-align:center;color:var(--mut)}
+
+/* status */
+footer{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:6px 12px;background:var(--panel);
+  border-top:1px solid var(--bd);font-size:12px;color:var(--mut)}
+.issues{position:absolute;bottom:34px;left:12px;right:12px;max-height:40vh;overflow:auto;background:var(--panel);
+  border:1px solid var(--bd);border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.18);padding:6px;z-index:20}
+.iss{display:flex;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;align-items:flex-start}
+.iss:hover{background:var(--bd2)}
+.iss .k{font-size:10px;font-weight:700;padding:1px 6px;border-radius:20px;flex:0 0 auto;margin-top:1px}
+.iss.error .k{background:var(--err-bg);color:var(--err)}
+.iss.warn .k{background:var(--warn-bg);color:var(--warn)}
+.hide{display:none!important}
+#drop{position:fixed;inset:0;background:rgba(37,99,235,.12);border:3px dashed var(--acc);
+  z-index:100;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;color:var(--acc)}
+#help{position:fixed;inset:0;background:rgba(10,14,20,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal{background:var(--panel);border:1px solid var(--bd);border-radius:12px;max-width:620px;width:100%;
+  max-height:82vh;overflow:auto;padding:20px 22px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.modal h4{margin:16px 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}
+.modal p{margin:0 0 8px;color:var(--tx);font-size:13.5px;line-height:1.6}
+.modal ul{margin:4px 0 0;padding-left:18px;font-size:13.5px;line-height:1.7;color:var(--tx)}
+.welcome{max-width:640px;margin:60px auto;text-align:center}
+.welcome h1{font-size:22px;margin:0 0 8px}
+.welcome p{color:var(--mut);margin:0 0 20px}
+.card{background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:22px;box-shadow:var(--shadow);text-align:left}
+.card h3{margin:0 0 8px;font-size:13px}
+.card ul{margin:0;padding-left:18px;color:var(--mut);font-size:13px;line-height:1.7}
+kbd{font:11px ui-monospace,Menlo,monospace;border:1px solid var(--bd);border-bottom-width:2px;
+  border-radius:4px;padding:1px 4px;background:var(--panel2)}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Template Studio<span>PowerScribe RTF</span></div>
+  <div class="seg" id="modeseg">
+    <button data-mode="edit" class="on">Edit</button>
+    <button data-mode="preview">Preview</button>
+    <button data-mode="source">Source</button>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <button id="helpBtn" class="ghost" title="How this works">?</button>
+  <button id="openBtn">Open…</button>
+  <button id="saveBtn" class="primary">Save .rtf</button>
+  <input type="file" id="file" accept=".rtf,text/rtf" multiple class="hide">
+</header>
+<main>
+  <aside>
+    <div class="phead">Fields <span class="sp"></span><button class="icon ghost" id="addField" title="Add field">+</button></div>
+    <div class="pad" style="padding:8px 10px;border-bottom:1px solid var(--bd2)">
+      <input id="search" placeholder="Filter fields / choices…">
+    </div>
+    <div class="pbody"><div class="olist" id="outline"></div></div>
+  </aside>
+  <div id="center">
+    <div id="toolbar"></div>
+    <div id="docwrap"></div>
+  </div>
+  <div id="insp"></div>
+</main>
+<footer>
+  <span id="stat"></span><span class="sp"></span>
+  <span id="vsum"></span>
+  <label class="row small" style="gap:5px"><input type="checkbox" id="showLists" style="width:auto"> expand choice lists</label>
+</footer>
+<div id="drop" class="hide">Drop PowerScribe .rtf templates here</div>
+<div id="help" class="hide">
+  <div class="modal">
+    <div class="row" style="margin-bottom:12px"><b style="font-size:16px">How these templates work</b><span class="sp"></span><button class="ghost" id="helpX">✕</button></div>
+    <p>A PowerScribe AutoText <b>.rtf</b> holds two things: the report prose you see, and — appended after the RTF — an XML block defining every field, its pick list, and its <i>character offset</i> into the report text.</p>
+    <h4>Pick lists</h4>
+    <p>Each choice has a <b>label</b> (the short word shown in the template and spoken to select it) and a <b>statement</b> (the sentence actually inserted into the report). A choice with a blank label shows its statement as the label — that is how PowerScribe stores it, and this editor keeps that behaviour.</p>
+    <p>The <b>default</b> choice is the one pre-filled when the template loads; in the report body it is the one drawn in red.</p>
+    <h4>Offsets</h4>
+    <p>Those offsets are why hand-editing these files breaks them: change one character of prose and every field after it points at the wrong place. This editor recomputes all of them on save, and refuses to save if they do not line up.</p>
+    <h4>Good to know</h4>
+    <ul>
+      <li>Labels and field names cannot contain <span class="mono">:</span> or <span class="mono">/</span> — those separate fields from choices.</li>
+      <li>A field deleted from the report body is dropped from the XML on save.</li>
+      <li><kbd>Ctrl</kbd>/<kbd>⌘</kbd>+<kbd>S</kbd> saves, <kbd>Ctrl</kbd>+<kbd>O</kbd> opens, <kbd>Enter</kbd> splits a paragraph.</li>
+      <li>Nothing leaves this computer — no network calls, no uploads.</li>
+    </ul>
+  </div>
+</div>
+<script>/*CORE*/</script>
+<script>/*APP*/</script>
+</body>
+</html>

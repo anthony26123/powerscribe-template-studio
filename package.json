@@ -1,0 +1,11 @@
+{
+  "name": "powerscribe-template-studio",
+  "version": "1.0.0",
+  "description": "View and edit PowerScribe AutoText .rtf report templates in the browser, with a pick-list editor.",
+  "private": true,
+  "scripts": {
+    "build": "node src/build.js",
+    "test": "node test/roundtrip.js"
+  },
+  "license": "MIT"
+}
